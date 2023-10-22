@@ -1,5 +1,6 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
+using System.Diagnostics.Metrics;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -14,9 +15,10 @@ services.AddLogging(config => {
 
 var builder = Host.CreateDefaultBuilder(args)
     .UseWindowsService(options => options.ServiceName = "PrometheusMVPProvider")
-    .ConfigureServices((context, services) => {
+    .ConfigureServices((_, services) => {
         LoggerProviderOptions.RegisterProviderOptions<ConsoleLoggerOptions, ConsoleLoggerProvider>(services);
 
+        services.AddSingleton<Metrics>();
         services.AddSingleton<TestService>();
         services.AddHostedService<WindowsBackgroundService>();
     });

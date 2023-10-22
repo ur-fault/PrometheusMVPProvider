@@ -3,10 +3,10 @@
 namespace PrometheusMVPProvider;
 internal class TestService
 {
-    private Counter<int> _numbersCheckedCounter;
+    private readonly Metrics _metrics;
 
-    public TestService(Meter meter) {
-        _numbersCheckedCounter = meter.CreateCounter<int>("numbers-checked");
+    public TestService(Metrics metrics) {
+        _metrics = metrics;
     }
 
     public int[] FindPrimes(int from, int to, CancellationToken? ct = null) {
@@ -22,7 +22,7 @@ internal class TestService
     }
 
     public bool IsPrime(int number) {
-        _numbersCheckedCounter.Add(1);
+        _metrics.AddNumberChecked();
 
         if (number < 2)
             return false;

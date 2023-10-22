@@ -7,12 +7,12 @@ partial class WindowsBackgroundService : BackgroundService
 {
     private readonly ILogger<WindowsBackgroundService> _logger;
     private readonly TestService _testService;
-    private readonly Counter<int> _primesFoundCounter;
+    private readonly Metrics _metrics;
 
-    public WindowsBackgroundService(ILogger<WindowsBackgroundService> logger, TestService testService, Meter meter) {
+    public WindowsBackgroundService(ILogger<WindowsBackgroundService> logger, TestService testService, Metrics metrics) {
         _logger = logger;
         _testService = testService;
-        _primesFoundCounter = meter.CreateCounter<int>("primes-found");
+        _metrics = metrics;
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken) {
@@ -25,7 +25,7 @@ partial class WindowsBackgroundService : BackgroundService
                 var primes = await Task.Run(() => _testService.FindPrimes(from, to, ct: stoppingToken), stoppingToken);
                 _logger.LogInformation("Found {Count} from {From} to {To}", primes.Length, from, to);
 
-                _primesFoundCounter.Add(primes.Length);
+                _metrics.AddPrimesFound(primes.Length);
 
                 await Task.Delay(1000, stoppingToken);
             }
