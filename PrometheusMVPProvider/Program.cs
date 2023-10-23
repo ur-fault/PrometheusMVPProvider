@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging.Configuration;
 using Microsoft.Extensions.Logging.Console;
 using Prometheus;
 using PrometheusMVPProvider;
+using PrometheusMVPProvider.Data;
 
 var services = new ServiceCollection();
 services.AddLogging(config => {

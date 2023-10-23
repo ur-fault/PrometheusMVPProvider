@@ -1,6 +1,4 @@
-﻿using System.Diagnostics.Metrics;
-
-namespace PrometheusMVPProvider;
+﻿namespace PrometheusMVPProvider;
 internal class TestService
 {
     private readonly Metrics _metrics;
